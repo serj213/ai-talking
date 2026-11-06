@@ -1,4 +1,7 @@
-.PHONY: check gen-openapi
+.PHONY: check gen-openapi run
+
+run:
+	uv run talking-agent
 
 gen-openapi:
 	uv run python scripts/generate_openapi_contract.py

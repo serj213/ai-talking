@@ -4,16 +4,19 @@ from pathlib import Path
 from fastapi.routing import APIRoute
 
 from talking_agent.main import create_app
+from talking_agent.settings import AppSettings
 from talking_agent.transport.http.generated_contract import HEALTH_STATUS_CODE
 from talking_agent.transport.http.health import router as health_router
 
 
 def test_runtime_openapi_matches_source_contract() -> None:
     source = json.loads((Path(__file__).parent.parent / "openapi/openapi.yaml").read_text())
-    runtime = create_app().openapi()
+    runtime = create_app(AppSettings(_env_file=None)).openapi()
 
     assert runtime["paths"]["/health"] == source["paths"]["/health"]
     assert runtime["components"]["schemas"]["HealthResponse"] == source["components"]["schemas"]["HealthResponse"]
+    assert "/v1/conversations" in source["paths"]
+    assert "/v1/conversations/{conversation_id}/messages" in source["paths"]
     assert HEALTH_STATUS_CODE == 200
 
 
