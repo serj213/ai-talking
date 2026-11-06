@@ -22,6 +22,31 @@
           }
         }
       }
+    },
+    "/v1/conversations": {
+      "post": {
+        "operationId": "create_conversation",
+        "responses": {
+          "201": {
+            "description": "Conversation created",
+            "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CreateConversationResponse"}}}
+          }
+        }
+      }
+    },
+    "/v1/conversations/{conversation_id}/messages": {
+      "post": {
+        "operationId": "send_message",
+        "parameters": [{"name": "conversation_id", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SendMessageRequest"}}}},
+        "responses": {
+          "200": {"description": "Reply", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SendMessageResponse"}}}},
+          "422": {"description": "Validation error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}},
+          "404": {"description": "Conversation not found", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}},
+          "503": {"description": "Language model unavailable", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}},
+          "504": {"description": "Language model timeout", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ErrorResponse"}}}}
+        }
+      }
     }
   },
   "components": {
@@ -38,6 +63,30 @@
         "type": "object",
         "required": ["status"],
         "title": "HealthResponse"
+      },
+      "CreateConversationResponse": {
+        "properties": {"conversation_id": {"type": "string"}},
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["conversation_id"]
+      },
+      "SendMessageRequest": {
+        "properties": {"text": {"type": "string", "minLength": 1, "maxLength": 1000}},
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["text"]
+      },
+      "SendMessageResponse": {
+        "properties": {"reply": {"type": "string"}},
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["reply"]
+      },
+      "ErrorResponse": {
+        "properties": {"code": {"type": "string"}},
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["code"]
       }
     }
   }

@@ -14,12 +14,24 @@ def main() -> None:
 
     target_path.write_text(
         "from typing import Literal\n\n"
-        "from pydantic import BaseModel, ConfigDict\n\n"
+        "from pydantic import BaseModel, ConfigDict, Field\n\n"
         f'HEALTH_PATH = "{health_path}"\n\n'
         f"HEALTH_STATUS_CODE = {health_status_code}\n\n"
         "class HealthResponse(BaseModel):\n"
         "    model_config = ConfigDict(extra=\"forbid\")\n\n"
-        f"    status: Literal[\"{status_value}\"]\n"
+        f"    status: Literal[\"{status_value}\"]\n\n"
+        "class CreateConversationResponse(BaseModel):\n"
+        "    model_config = ConfigDict(extra=\"forbid\")\n\n"
+        "    conversation_id: str\n\n"
+        "class SendMessageRequest(BaseModel):\n"
+        "    model_config = ConfigDict(extra=\"forbid\")\n\n"
+        "    text: str = Field(min_length=1, max_length=1000)\n\n"
+        "class SendMessageResponse(BaseModel):\n"
+        "    model_config = ConfigDict(extra=\"forbid\")\n\n"
+        "    reply: str\n\n"
+        "class ErrorResponse(BaseModel):\n"
+        "    model_config = ConfigDict(extra=\"forbid\")\n\n"
+        "    code: str\n"
     )
 
 

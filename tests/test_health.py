@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from talking_agent.application.health import HealthService
 from talking_agent.main import create_app, main
+from talking_agent.settings import AppSettings
 
 
 def test_health_service_returns_ok() -> None:
@@ -14,7 +15,7 @@ def test_health_service_returns_ok() -> None:
 
 
 def test_health_returns_ok() -> None:
-    client = TestClient(create_app())
+    client = TestClient(create_app(AppSettings(_env_file=None)))
 
     response = client.get("/health")
 
