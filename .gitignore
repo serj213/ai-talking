@@ -1,6 +1,8 @@
 .venv/
+.env
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
 __pycache__/
 *.py[cod]
+/.codex/PRODUCT_PLAN.md
