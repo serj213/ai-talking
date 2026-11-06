@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+branch_name=$(git branch --show-current)
+
+if [ "$branch_name" = "master" ]; then
+    echo "Direct commits to master are prohibited. Create a feature branch and open a merge request."
+    exit 1
+fi
